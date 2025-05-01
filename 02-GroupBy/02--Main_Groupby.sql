@@ -53,15 +53,14 @@ HAVING   SUM(VL_SALARIO_MENSAL) > 10000;
 linguagem de programação para o SGBDR Oracle, que é uma extensão da linguagem SQL.
 */
 
-CASE 
-     WHEN <CONDIÇÃO 1> THEN <VALOR 1>
-     WHEN <CONDIÇÃO 2> THEN <VALOR 2>
-     WHEN <CONDIÇÃO 3> THEN <VALOR 3>
-     .
-     .
-     .
-     ELSE <VALOR 4>
-END
+SELECT 
+    CASE 
+        WHEN VL_SALARIO_MENSAL > 5000 THEN 'ALTO'
+        WHEN VL_SALARIO_MENSAL BETWEEN 3000 AND 5000 THEN 'MEDIO'
+        WHEN VL_SALARIO_MENSAL < 3000 THEN 'BAIXO'
+        ELSE 'INDEFINIDO'
+    END AS SALARIO_CATEGORIA
+FROM T_SIP_FUNCIONARIO;
 
 /*
     No exemplo abaixo serão recuperados o status dos projetos “EM ANDAMENTO” ou “FINALIZADO”, 
