@@ -188,8 +188,69 @@ SELECT
 -- Funções de Data
 ---------------------------------------------------------------------------------------
 
+-- sysdate - retorna a data e hora atuais do sistema
+SELECT 
+    SYSDATE AS "DATA E HORA ATUAL"
+FROM
+    DUAL;  
+
+-- ADD_MONTHS()
+-- ADD_MONTHS(data, n) - adiciona n meses a uma data
+SELECT SYSDATE                 "DATA ATUAL"  ,
+       ADD_MONTHS(SYSDATE, 1)  "PRÓXIMO MÊS" ,
+       ADD_MONTHS(SYSDATE, -1) "MÊS ANTERIOR"
+  FROM DUAL;
 
 
+-- LAST_DAY()
+-- LAST_DAY(data) - retorna o último dia do mês da data informada
+SELECT SYSDATE "DATA ATUAL" ,
+       LAST_DAY(SYSDATE) "DATA COM ÚLTIMO DIA DO MÊS"
+  FROM DUAL;
 
-  
+-- MONTHS_BETWEEN()
+-- MONTHS_BETWEEN(data1, data2) - retorna a diferença em meses entre duas datas
+SELECT DT_ADMISSAO ,
+       SYSDATE     , 
+       MONTHS_BETWEEN(SYSDATE, DT_ADMISSAO) ,
+       TRUNC(MONTHS_BETWEEN(SYSDATE, DT_ADMISSAO)) || ' MESES'
+  FROM T_SIP_FUNCIONARIO;
+-- usando trunc() para arredondar o resultado da função months_between
 
+
+-- NEXT_DAY()
+-- NEXT_DAY(data, n) - retorna a próxima data correspondente ao dia da semana informado
+SELECT SYSDATE ,
+       NEXT_DAY(SYSDATE, 1) "PRÓXIMO DOMINGO" ,
+       NEXT_DAY(SYSDATE, 2) "PRÓXIMA SEGUNDA" ,
+       NEXT_DAY(SYSDATE, 3) "PRÓXIMA TERÇA"   ,
+       NEXT_DAY(SYSDATE, 4) "PRÓXIMA QUARTA"  ,
+       NEXT_DAY(SYSDATE, 5) "PRÓXIMA QUINTA"  ,
+       NEXT_DAY(SYSDATE, 6) "PRÓXIMA SEXTA"   ,
+       NEXT_DAY(SYSDATE, 7) "PRÓXIMO SÁBADO" 
+  FROM DUAL;
+
+--====================================================================
+-- Funções Adicionais
+-----------------------------------------------------------------------------------------
+-- EXEMPLO – FUNÇÕES DE DATA 
+SELECT DT_ADMISSAO ,
+       TO_CHAR(DT_ADMISSAO, 'YYYY')     "ANO CONTRATACAO"       ,
+        TO_CHAR(DT_ADMISSAO, 'MM/YYYY') "MÊS E ANO CONTRATACAO"  ,
+        TO_CHAR(DT_ADMISSAO, 'DD/MM') "DIA E MÊS DA CONTRATACAO" ,
+        TO_CHAR(DT_ADMISSAO, 'DD " de " fmMONTH " de " YYYY', 'NLS_DATE_LANGUAGE=PORTUGUESE') "DATA POR EXTENSO"
+  FROM T_SIP_FUNCIONARIO;
+-- Usando To_char() para formatar 
+
+
+-- EXEMPLO – FUNÇÕES DE DATA 
+ SELECT DT_ADMISSAO ,
+        TO_DATE(DT_ADMISSAO , 'DD/MM/YYYY') - 5,
+        TO_DATE(SYSDATE, 'DD/MM/YYYY') -
+                 TO_DATE(DT_ADMISSAO, 'DD/MM/YYYY')
+  FROM  T_SIP_FUNCIONARIO;
+
+-- EXEMPLO – FUNÇÕES DE DATA 
+ SELECT DT_ADMISSAO ,
+        TO_DATE(DT_ADMISSAO,'DD/MM/YYYY HH:MI:SS') + 6/24
+   FROM T_SIP_FUNCIONARIO;
