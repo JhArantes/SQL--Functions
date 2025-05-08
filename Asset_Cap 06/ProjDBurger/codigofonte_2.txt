@@ -1,0 +1,3 @@
+-- Essa instrução SQL exibe a quantidade total
+-- de pedidos realizados no projeto DBurger
+select count(*) from db_pedido;

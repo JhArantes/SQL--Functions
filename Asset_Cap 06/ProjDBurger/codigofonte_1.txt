@@ -1,0 +1,8 @@
+--
+-- O diretório D:\DBurger necessita estar criado
+-- O arquivo cria.sql tem que estar dentro do diretorio D:\DBurger
+-- O @(arroba) irá executar todos os comandos DDLs existentes no arquivo cria.sql
+--
+@D:\DBurger\cria.sql;
+
+

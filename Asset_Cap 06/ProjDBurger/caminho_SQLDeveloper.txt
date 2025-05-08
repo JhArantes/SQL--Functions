@@ -1,0 +1,2 @@
+@D:\DBurger\apaga.sql
+@D:\DBurger\cria.sql

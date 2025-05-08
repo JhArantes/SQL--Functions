@@ -1,0 +1,8 @@
+-- Cuidado!!! Este script elimina todo o projeto DBURGER.
+-- O diretório D:\DBurger necessita estar criado
+-- O arquivo apaga.sql tem que estar dentro do diretorio D:\DBurger
+-- O @(arroba) irá executar todos os comandos DDLs existentes no arquivo apaga.sql
+--
+@D:\DBurger\apaga.sql;
+
+
