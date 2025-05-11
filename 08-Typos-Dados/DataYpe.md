@@ -235,3 +235,13 @@ END;
 /
 ```
 
+# 🍔 Projeto DBurger - Estudo de Caso com PL/SQL (Oracle)
+
+## 🎯 Conversão Implícita vs. Conversão Explícita (PL/SQL)
+
+### ✅ Conversão Implícita
+- **Feita automaticamente pelo Oracle.**
+- Ocorre quando misturamos tipos compatíveis, como `NUMBER` e `VARCHAR2`.
+- **Exemplo:**
+  ```sql
+  SELECT * FROM clientes WHERE idade = '30';
