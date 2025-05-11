@@ -1,0 +1,9 @@
+-- A instrução SQL abaixo exibe a partir de um código de cliente válido (que tenha feito compra no projeto Dburger, seu nome completo, a data do último pedido feito e o valor do ticket médio de compra.
+--
+select  c.nm_cliente, max(p.dt_pedido), round(avg(p.vl_tot_pedido),2) vl_ticket_medio_compra
+from    db_pedido p inner join db_cliente c
+on  (c.nr_cliente = p.nr_cliente)
+where   c.nr_cliente = &digite_o_numero_cliente
+group by c.nm_cliente;
+/
+

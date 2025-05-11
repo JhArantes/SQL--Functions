@@ -1,0 +1,32 @@
+-- O script abaixo cria variáveis e faz acesso a dados no projeto DBurger
+-- para que o processamento do exercício guiado seja realizado com sucesso
+-- PORÉM CERTIFIQUE-SE DE QUE EXISTA UM CÓDIGO DE CLIENTE VÁLIDO, pois caso contrário,
+-- esse script irá ocorrer erro de execução, sendo necessário criar controle de exceção,
+-- o que não é nosso foco nesse momento.
+SET SERVEROUTPUT ON;
+DECLARE
+    v_nr_cliente number(10);
+    -- Variável que irá receber o nome do cliente que se encontra na tabela db_cliente
+    -- por isso utilizamos o %type
+    v_nm_cliente db_cliente.nm_cliente%type;
+    -- Variável que irá receber a data do último pedido feito pelo cliente
+    v_dt_ultimo_pedido_feito date;
+    -- Variável que irá receber o valor do ticket médio de compra do cliente
+    v_vl_ticket_medio number(10,2);
+BEGIN
+    v_nr_cliente := &informe_numero_cliente;
+    select  c.nm_cliente, max(p.dt_pedido), round(avg(p.vl_tot_pedido),2)
+    into    v_nm_cliente, v_dt_ultimo_pedido_feito, v_vl_ticket_medio
+    from    db_pedido p inner join db_cliente c
+    on  (c.nr_cliente = p.nr_cliente)
+    where   c.nr_cliente = v_nr_cliente
+    group by c.nm_cliente;
+ 
+    dbms_output.put_line('O cliente número(' || v_nr_cliente || ') ' 
+    || v_nm_cliente || ' tem o valor do ticket médio em R$:' || v_vl_ticket_medio
+    || chr(13) || 'e fez o último pedido em um(a) ' ||
+    TO_CHAR(v_dt_ultimo_pedido_feito, 'FMDay, DD "de" FMMonth "de" YYYY', 'NLS_DATE_LANGUAGE=Portuguese')
+                       );
+END;
+/
+

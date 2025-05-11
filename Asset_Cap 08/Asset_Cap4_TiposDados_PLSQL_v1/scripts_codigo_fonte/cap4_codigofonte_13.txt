@@ -1,0 +1,16 @@
+-- O script abaixo cria variáveis para trabalhar com o tema conversão explícita
+-- e atribui valores a essas variáveis.
+-- Após isso, os respectivos conteúdos são exibidos.
+SET SERVEROUTPUT ON;
+DECLARE
+     v_data_aniversario DATE;
+     v_data_extenso VARCHAR2(150);
+BEGIN
+     -- Transformando a string 18/05/1967 em uma data.
+     v_data_aniversario := TO_DATE('18/05/1967','dd/mm/yyyy');
+     -- Conversão da data de aniversário para uma data por extenso
+     v_data_extenso := TO_CHAR(v_data_aniversario, 'FMDay, DD "de" FMMonth "de" YYYY', 
+                       'NLS_DATE_LANGUAGE=Portuguese');
+     dbms_output.put_line('Data por extenso: ' || v_data_extenso);
+END;
+/

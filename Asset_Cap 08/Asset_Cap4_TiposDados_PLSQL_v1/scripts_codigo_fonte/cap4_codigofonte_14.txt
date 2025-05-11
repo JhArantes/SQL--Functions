@@ -1,0 +1,24 @@
+-- O script abaixo cria variáveis para trabalhar com o tema conversão implícita
+-- perceba como o número é convertido automaticamente.
+-- Após isso, os respectivos conteúdos são exibidos.
+SET SERVEROUTPUT ON;
+DECLARE
+     v_data_aniversario DATE; 
+ 	 -- Estamos "forçando" a variável quantidade de dias de vida como sendo do tipo caractere.
+     v_qtd_dias_vida varchar2(10);
+BEGIN
+    -- Transformando a string 18/05/1967 em uma data.
+    v_data_aniversario := TO_DATE('18/05/1967','DD/MM/YYYY');
+	-- Perceba que o resultado do calculo de sysdate é um retorno number
+    -- e a sua variável v_qtd_dias de vida é do tipo string, ou seja,
+    -- a linguagem de programação está fazendo conversão implícita.
+    SELECT TRUNC( SYSDATE - v_data_aniversario,0)
+	INTO	v_qtd_dias_vida
+    FROM   DUAL;
+	 
+    dbms_output.put_line('Quem nasceu em 18/05/1967 possui (' 
+                         || v_qtd_dias_vida || ') dias de vida!');
+END;
+/
+
+
