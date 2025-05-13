@@ -1,0 +1,10 @@
+-- A instrução SQL abaixo exibe a partir de um código de cliente 
+-- válido (que tenha feito compra no projeto Dburger), 
+-- o valor médio de compra feito pelo cliente.
+-- Nesse exemplo temos o cliente de número 774;
+select c.qt_estrelas, round(avg(p.vl_tot_pedido),2)
+from   db_pedido p inner join db_cliente c
+on     (c.nr_cliente = p.nr_cliente)
+where  c.nr_cliente = 774
+group by c.qt_estrelas; 
+

@@ -1,0 +1,8 @@
+-- A instrução SQL abaixo exibe os dados da loja, valor do salário bruto 
+-- e valor atual do percentual de comissão do funcionário 101.
+select  nr_matricula_func_loja,
+        nr_loja,
+        vl_salario_bruto,
+        vl_perc_comissao
+from    db_func_loja 
+where   nr_matricula_func_loja = 101;

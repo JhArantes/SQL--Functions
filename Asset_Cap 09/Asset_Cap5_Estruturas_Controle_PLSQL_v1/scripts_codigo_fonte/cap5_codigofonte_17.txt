@@ -1,0 +1,20 @@
+-- O script abaixo trabalha com a instrução FOR LOOP 
+-- e irá ocorrer erro quando tentar inserir valores 
+-- na tabela DB_FORMA_PAGAMENTO do projeto DBurger
+SET SERVEROUTPUT ON;
+BEGIN
+	FOR xpto IN 10..15
+	LOOP
+		
+		INSERT INTO DB_FORMA_PAGAMENTO(CD_FORMA_PAGTO, DS_FORMA_PAGTO, ST_FORMA_PAGTO)
+		VALUES ( xpto, 'Forma pagamento(' || xpto || ')', 'I');
+		
+		IF xpto > 13 then
+         -- A variável interna do contador LOOP não pode receber valores.'
+		 xpto := 0; -- comando ilegal, vai ocorrer erro e não incluir dados.
+		END IF;
+
+	END LOOP;
+END;
+/
+

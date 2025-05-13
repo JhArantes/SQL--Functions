@@ -1,0 +1,14 @@
+-- O script abaixo declara uma variável com potenciação 2 elevado a 32
+-- o que extrapola o valor máximo de conteúdo para o contador interno xyz
+-- do comando FOR LOOP
+SET SERVEROUT PUT ON;
+DECLARE
+	-- Declaramos uma variável com potenciação 2 elevado a 32
+    v_valor_superior NUMBER := 2**32;
+BEGIN
+	FOR xyz IN 1..v_valor_superior 
+	LOOP -- vai ocorrer um erro do tipo 'numeric overflow'
+        dbms_output.put_line('O valor da variável é:' || xyz );
+	END LOOP;
+END;
+/

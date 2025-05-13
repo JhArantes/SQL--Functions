@@ -1,0 +1,4 @@
+-- Primeiramente verificamos os dados existentes 
+-- na tabela DB_FORMA_PAGAMENTO.
+--
+SELECT * FROM DB_FORMA_PAGAMENTO; 

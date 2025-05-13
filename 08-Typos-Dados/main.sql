@@ -22,7 +22,7 @@ DECLARE
     v_nr_loja db_loja.nr_loja%type := 00;
 BEGIN
     dbms_output.put_line('A idade média do cliente da loja(' 
-    || v_nr_loja || ')' || ' é: ' || v_nr_idade_media_cliente);
+    || v_nr_loja || ')' || ' é de: ' || v_nr_idade_media_cliente);
 END;
 /
 

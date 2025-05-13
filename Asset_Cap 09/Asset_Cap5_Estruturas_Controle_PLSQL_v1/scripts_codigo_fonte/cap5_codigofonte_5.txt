@@ -1,0 +1,22 @@
+-- O script abaixo calcula o valor do ticket médio de venda de um 
+-- determinado funcionário e se o valor for maior do que R$ 330, 
+-- adiciona 5% a mais no percentual atual. 
+DECLARE
+    v_nr_matricula_func_atd     db_pedido.nr_matricula_func_atd%type;
+    v_vl_ticket_medio           db_pedido.vl_tot_pedido%type;
+BEGIN
+    v_nr_matricula_func_atd := &informe_nr_funcionario_loja;
+    SELECT  ROUND( AVG(vl_tot_pedido),2)
+    INTO    v_vl_ticket_medio
+    FROM    db_pedido
+    where   to_char(dt_pedido, 'yyyy') = to_char(sysdate, 'yyyy')
+    and     nr_matricula_func_atd = v_nr_matricula_func_atd;
+    -- Se o valor do ticket médio de venda feito pelo funcionario
+    -- for maior do que R$ 330, adicionamos um bônus de 5% a mais na comissão atual do funcionário.
+    IF v_vl_ticket_medio > 330 then
+        update db_func_loja set vl_perc_comissao = vl_perc_comissao + 5
+        where nr_matricula_func_loja = v_nr_matricula_func_atd;
+        commit;
+    END IF;
+END;
+/

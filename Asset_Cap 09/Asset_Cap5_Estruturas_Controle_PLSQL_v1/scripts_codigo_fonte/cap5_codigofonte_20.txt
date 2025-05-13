@@ -1,0 +1,16 @@
+-- O script abaixo trabalha com a instrução FOR LOOP 
+-- e irá inserir 5 novas formas de pagamento na tabela DB_FORMA_PAGAMENTO do projeto DBurger.
+
+DECLARE
+    v_contador_inicial PLS_INTEGER;
+BEGIN
+    -- Armazena a quantidade de linhas cadastradas na tabela forma pagto.
+    SELECT COUNT(*)+1 INTO v_contador_inicial FROM DB_FORMA_PAGAMENTO;
+        
+	FOR xpto IN v_contador_inicial..v_contador_inicial+5
+	LOOP
+		INSERT INTO DB_FORMA_PAGAMENTO(CD_FORMA_PAGTO, DS_FORMA_PAGTO, ST_FORMA_PAGTO)
+		VALUES ( xpto, 'Forma pagamento(' || xpto || ')', 'I');
+	END LOOP;
+END;
+/

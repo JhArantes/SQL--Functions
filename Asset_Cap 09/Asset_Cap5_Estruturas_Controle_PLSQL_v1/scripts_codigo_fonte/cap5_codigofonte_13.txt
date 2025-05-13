@@ -1,0 +1,13 @@
+-- O script abaixo trabalha com a instrução WHILE LOOP
+SET SERVEROUTPUT ON;
+DECLARE
+    v_contador PLS_INTEGER := 10;  -- Inicia o contador
+BEGIN
+    -- Enquanto o contador for menor ou igual a 10
+    WHILE v_contador > 0 LOOP
+		-- Exibe o conteúdo do contador
+        DBMS_OUTPUT.PUT_LINE('Sequência (' || v_contador || ')' );  
+        v_contador := v_contador - 1;  -- reduzindo o valor do contador
+    END LOOP;
+END;
+/

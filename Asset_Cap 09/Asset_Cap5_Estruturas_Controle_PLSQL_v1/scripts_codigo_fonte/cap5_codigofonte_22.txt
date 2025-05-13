@@ -1,0 +1,21 @@
+-- O script abaixo utiliza o conceito do comando GOTO
+SET SERVEROUTPUT ON;
+DECLARE
+    v_nm_cliente db_cliente.nm_cliente%type;
+    v_contador number := 00;
+BEGIN
+    
+    <<pega_nome_cliente>>   
+    v_contador := v_contador +1;
+    
+    SELECT  nm_cliente 
+    INTO    v_nm_cliente 
+    FROM    db_cliente
+    WHERE   nr_cliente = v_contador;
+    
+    dbms_output.put_line('O cliente(' || v_contador || ' ) possui o nome de: ' || v_nm_cliente);
+    IF v_contador < 5 then
+        GOTO pega_nome_cliente; -- desvia o código para a primeira linha do label definido.
+    END IF;    
+END;
+/

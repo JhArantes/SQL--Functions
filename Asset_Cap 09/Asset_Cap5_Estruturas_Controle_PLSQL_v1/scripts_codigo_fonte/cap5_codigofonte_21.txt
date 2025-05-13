@@ -1,0 +1,20 @@
+-- O script abaixo trabalha com a instrução FOR LOOP 
+-- e exibir 5 formas de pagamento da tabela DB_FORMA_PAGAMENTO do projeto DBurger.
+-- Após isso, irá sair do LOOP.
+SET SERVEROUTPUT ON;
+DECLARE
+    v_contador_total PLS_INTEGER;
+BEGIN
+    -- Armazena a quantidade de linhas cadastradas na tabela forma pagto.
+    SELECT COUNT(*) INTO v_contador_total FROM DB_FORMA_PAGAMENTO;
+        
+	FOR xpto IN 1..v_contador_total
+	LOOP
+	
+      DBMS_OUTPUT.PUT_LINE('Sequência (' || xpto || ')' );  
+      
+	  EXIT WHEN xpto > 4;
+	
+    END LOOP;
+END;
+/

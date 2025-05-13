@@ -1,0 +1,52 @@
+
+-- O script abaixo cria variáveis e faz acesso a dados no projeto DBurger
+-- para que o processamento do exercício guiado seja realizado com sucesso
+-- PORÉM CERTIFIQUE-SE DE QUE EXISTA UM CÓDIGO DE CLIENTE VÁLIDO, pois caso contrário,
+-- esse script irá ocorrer erro de execução, sendo necessário criar controle de exceção,
+-- o que não é nosso foco nesse momento.
+SET SERVEROUTPUT ON;
+DECLARE
+    -- Variável que irá receber o número do cliente por isso que utilizamos o %type
+    v_nr_cliente db_cliente.nr_cliente%type;
+	-- Variável que irá receber o número de estrelas do cliente
+	v_qt_estrelas db_cliente.qt_estrelas%type;
+    -- Variável que irá receber o valor do ticket médio de compra do cliente
+    v_vl_ticket_medio number(10,2);
+BEGIN
+    v_nr_cliente := &informe_numero_cliente;
+
+    select  round(avg(p.vl_tot_pedido),2)
+    into    v_vl_ticket_medio
+    from    db_pedido p inner join db_cliente c
+    on  (c.nr_cliente = p.nr_cliente)
+    where   c.nr_cliente = v_nr_cliente
+    group by c.nm_cliente;
+ 
+    -- Agora vamos calcular a quantidade de estrelas
+	-- a partir do valor médio de vendas.
+	IF v_vl_ticket_medio > 399 THEN
+	   v_qt_estrelas := 5;
+	ELSIF v_vl_ticket_medio > 360 THEN
+		v_qt_estrelas := 4;
+	ELSIF v_vl_ticket_medio > 320 THEN
+		v_qt_estrelas := 3;
+	ELSIF v_vl_ticket_medio > 280 THEN
+		v_qt_estrelas := 2;
+	ELSE
+		v_qt_estrelas := 1;
+	END IF;
+
+    -- Após trabalharmos com o comando IF ELSIF ELSE END IF
+	-- chegamos a um novo valor de estrelas.
+    UPDATE 	DB_CLIENTE SET QT_ESTRELAS = V_QT_ESTRELAS
+	WHERE	NR_CLIENTE = V_NR_CLIENTE;
+    
+    -- Confirmamos a transação pendente
+	COMMIT;
+    
+    dbms_output.put_line('O cliente número(' || v_nr_cliente || ') ' 
+    || ' tem o valor do ticket médio em R$:' || v_vl_ticket_medio
+    || chr(13) || 'e o novo número de estrelas é (' || v_qt_estrelas || ')');
+
+END;
+/

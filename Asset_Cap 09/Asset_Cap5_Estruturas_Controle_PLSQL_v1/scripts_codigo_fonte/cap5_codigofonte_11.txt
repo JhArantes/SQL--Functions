@@ -1,0 +1,16 @@
+-- A instrução SQL abaixo trata do tema LOOP simples em Oracle PL/SQL.
+SET SERVEROUTPUT ON;
+DECLARE
+	v_contador number(1) := 00;
+BEGIN
+	LOOP
+		v_contador := v_contador + 1;
+		dbms_output.put_line('Contador número(' || v_contador || ')' );
+		-- Se o valor do contador ultrapassar o número 6, o processamento se encerra.
+		IF v_contador > 6 THEN
+			exit;
+		END IF;
+	END LOOP;
+	dbms_output.put_line('Saímos do loop => contador número(' || v_contador || ')' );
+END;
+/

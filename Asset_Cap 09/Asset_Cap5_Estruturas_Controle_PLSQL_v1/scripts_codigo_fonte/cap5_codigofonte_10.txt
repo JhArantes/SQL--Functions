@@ -1,0 +1,38 @@
+SET SERVEROUTPUT ON;
+DECLARE
+	v_nota_final char(1) := 'B';
+BEGIN
+	CASE v_nota_final
+		WHEN 'A' THEN dbms_output.put_line('Excelente');
+		WHEN 'B' THEN dbms_output.put_line('Muito bom...');
+		WHEN 'C' THEN dbms_output.put_line('Bom');
+		WHEN 'D' THEN dbms_output.put_line('Deixou a desejar');
+		WHEN 'F' THEN dbms_output.put_line('Reprovado');
+	ELSE 
+		dbms_output.put_line('Fora da faixa...!');
+	END CASE;
+END;
+/
+
+--
+-- Agora no formato do comando IF
+--
+SET SERVEROUTPUT ON;
+DECLARE
+	v_nota_final char(1) := 'B';
+BEGIN
+	IF v_nota_final = 'A' THEN
+		dbms_output.put_line('Excelente');
+	ELSIF v_nota_final = 'B' THEN
+		dbms_output.put_line('Muito bom...');
+	ELSIF v_nota_final = 'C' THEN
+		dbms_output.put_line('Bom');
+	ELSIF v_nota_final = 'D' THEN
+		dbms_output. put_line('Deixou a desejar');
+	ELSIF v_nota_final = 'F' THEN
+		dbms_output.put_line('Reprovado');
+	ELSE
+		dbms_output.put_line('Fora da faixa...!');
+	END IF;
+END;
+/

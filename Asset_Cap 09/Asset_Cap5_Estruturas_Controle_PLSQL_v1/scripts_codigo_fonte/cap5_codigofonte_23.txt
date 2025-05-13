@@ -1,0 +1,16 @@
+-- O script abaixo utiliza o conceito do comando NULL
+SET SERVEROUTPUT ON;
+DECLARE
+    v_qt_pedidos_cliente PLS_INTEGER := 00;
+    v_nr_cliente db_cliente.nr_cliente%type := 00;
+BEGIN
+
+	IF v_qt_pedidos_cliente > 10 then
+		update DB_CLIENTE SET QT_ESTRELAS = 5
+		WHERE  NR_CLIENTE = V_NR_CLIENTE;
+	ELSE
+		dbms_output.put_line('Vai passar aqui e não irá fazer nada!');
+		NULL;
+	END IF;
+END;
+/
