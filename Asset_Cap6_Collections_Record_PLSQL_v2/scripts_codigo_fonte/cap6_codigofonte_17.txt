@@ -1,0 +1,29 @@
+DECLARE
+   -- Variável para armazenar a Nested Table existente
+   v_pesquisa_satisfacao tof_avaliacao_cliente;
+BEGIN
+   -- Recuperar a Nested Table existente do cliente com número 1
+   SELECT OBJ_PESQUISA_SATISFACAO
+   INTO v_pesquisa_satisfacao
+   FROM DB_CLIENTE
+   WHERE NR_CLIENTE = -1;
+
+   -- Verificar se a Nested Table está inicializada
+   IF v_pesquisa_satisfacao IS NULL THEN
+      v_pesquisa_satisfacao := tof_avaliacao_cliente(); -- Inicializar caso esteja nula
+   END IF;
+
+   -- Adicionar uma nova linha com os dados da nova avaliação
+   v_pesquisa_satisfacao.EXTEND(1);
+   v_pesquisa_satisfacao(v_pesquisa_satisfacao.COUNT) := 
+      rec_avaliacao(1, TO_DATE('2024-12-31', 'YYYY-MM-DD'), 4);
+
+   -- Atualizar a tabela com a Nested Table modificada
+   UPDATE DB_CLIENTE
+   SET OBJ_PESQUISA_SATISFACAO = v_pesquisa_satisfacao
+   WHERE NR_CLIENTE = -1;
+
+   -- Confirmar a transação
+   COMMIT;
+END;
+/

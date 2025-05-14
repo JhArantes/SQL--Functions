@@ -1,0 +1,36 @@
+-- O script abaixo apresenta como trabalhar com arrays 
+-- PL/SQL Nested Tables
+--
+SET SERVEROUTPUT ON;
+
+DECLARE
+   -- Definindo um tipo para a Nested Table
+   TYPE dados_vendas IS TABLE OF VARCHAR2(50);
+   TYPE valores_vendas IS TABLE OF NUMBER;
+
+   -- Declarando variáveis baseadas no tipo
+   itens_vendidos dados_vendas;
+   total_vendas valores_vendas;
+BEGIN
+   -- Inicializando as Nested Tables
+   itens_vendidos := dados_vendas();
+   total_vendas := valores_vendas();
+
+   -- Populando dados
+   itens_vendidos.EXTEND(3);
+   total_vendas.EXTEND(3);
+
+   itens_vendidos(1) := 'Cheeseburger';
+   itens_vendidos(2) := 'Batata Frita';
+   itens_vendidos(3) := 'Suco Laranja';
+
+   total_vendas(1) := 500;
+   total_vendas(2) := 300;
+   total_vendas(3) := 700;
+
+   -- Iterando pelos dados e exibindo-os
+   FOR i IN 1..itens_vendidos.COUNT LOOP
+      DBMS_OUTPUT.PUT_LINE('Item: ' || itens_vendidos(i) || 
+                           ', Total de Vendas R$: ' || total_vendas(i));
+   END LOOP;
+END;

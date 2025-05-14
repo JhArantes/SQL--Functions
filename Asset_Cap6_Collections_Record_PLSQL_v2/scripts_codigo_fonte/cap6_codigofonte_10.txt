@@ -1,0 +1,67 @@
+-- O script abaixo utiliza os métodos de acesso FIRST, LAST e NEXT 
+-- em uma PL/SQL Tables
+--
+SET SERVEROUTPUT ON
+DECLARE
+   -- Definição de um tipo de dado RECORD com três colunas
+   TYPE rec_vendas_diaria_loja IS RECORD (
+      nr_loja               NUMBER(5),
+      nome_loja             VARCHAR2(100),
+      data_venda            DATE,
+      valor_total_vendas    NUMBER(8,2)
+   );
+
+  -- Tabela indexada baseada no RECORD
+   TYPE atab_vendas_diaria_por_loja IS TABLE OF rec_vendas_diaria_loja INDEX BY PLS_INTEGER;
+   array_vendas_diaria_loja atab_vendas_diaria_por_loja;
+   v_linha_atual_array NUMBER;
+   v_linha_final_array NUMBER;
+BEGIN
+   -- Populando a tabela com dados simulados 
+   SELECT   L.NR_LOJA, L.NM_LOJA 
+   INTO     array_vendas_diaria_loja(1).nr_loja, array_vendas_diaria_loja(1).nome_loja
+   FROM     DB_LOJA L
+   WHERE    L.NR_LOJA = 1;
+   
+   array_vendas_diaria_loja(1).data_venda := TO_DATE('31-12-2024', 'DD-MM-YYYY');
+   array_vendas_diaria_loja(1).valor_total_vendas := 47654.32;
+
+   -- Populando a tabela com dados simulados 
+   SELECT   L.NR_LOJA, L.NM_LOJA 
+   INTO     array_vendas_diaria_loja(2).nr_loja, array_vendas_diaria_loja(2).nome_loja
+   FROM     DB_LOJA L
+   WHERE    L.NR_LOJA = 2;
+   
+   array_vendas_diaria_loja(2).data_venda := TO_DATE('31-12-2024', 'DD-MM-YYYY');
+   array_vendas_diaria_loja(2).valor_total_vendas := 35212;
+   
+   
+   -- Populando a tabela com dados simulados 
+   SELECT   L.NR_LOJA, L.NM_LOJA 
+   INTO     array_vendas_diaria_loja(3).nr_loja, array_vendas_diaria_loja(3).nome_loja
+   FROM     DB_LOJA L
+   WHERE    L.NR_LOJA = 3;
+   
+   array_vendas_diaria_loja(3).data_venda := TO_DATE('31-12-2024', 'DD-MM-YYYY');
+   array_vendas_diaria_loja(3).valor_total_vendas := 68542;
+
+   -- Armazenamos a primeira linha da array
+   v_linha_atual_array := array_vendas_diaria_loja.FIRST;
+   -- Armazenamos a última linha da array
+   v_linha_final_array := array_vendas_diaria_loja.LAST;
+
+   LOOP
+      DBMS_OUTPUT.PUT_LINE('Loja (' || array_vendas_diaria_loja(v_linha_atual_array).nr_loja 
+      || '): ' || array_vendas_diaria_loja(v_linha_atual_array).nome_loja 
+      || ', Data: ' || TO_CHAR(array_vendas_diaria_loja(v_linha_atual_array).data_venda, 'DD/MM/YYYY')
+     || ', Total Vendas: ' || array_vendas_diaria_loja(v_linha_atual_array).valor_total_vendas);
+  
+      -- Irá sair após exibir na tela o último pedido
+     EXIT WHEN array_vendas_diaria_loja.LAST = v_linha_atual_array;
+     
+     -- Seleciona a próxima loja disponível
+     v_linha_atual_array := array_vendas_diaria_loja.NEXT(v_linha_atual_array);
+
+   END LOOP;
+ 
+END;

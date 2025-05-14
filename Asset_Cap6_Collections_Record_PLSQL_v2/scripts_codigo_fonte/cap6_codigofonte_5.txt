@@ -1,0 +1,30 @@
+-- O script abaixo armazena os 5 itens customizados que o cliente escolheu 
+-- para ser produzido seu hamburger
+--
+SET SERVEROUTPUT ON;
+DECLARE
+    -- Definição do negócio de que temos no máximo 5 ingredientes por hambúrguer
+   TYPE lista_ingredientes IS VARRAY(5) OF VARCHAR2(50); 
+   v_itens_customizados lista_ingredientes;
+BEGIN
+   -- O cliente selecionou os itens que devem compor seu hamburger.
+   --
+   v_itens_customizados := lista_ingredientes('Pão de Cenoura', 'Hambúrguer Artesanal Beringela', 'Ovo', 'Cebola Caramelizada', 'Molho Especial');
+
+   -- Verificando se o pedido está dentro do limite
+   -- estipulado de 5 ingredientes.
+   
+   IF v_itens_customizados.COUNT > 5 THEN
+      DBMS_OUTPUT.PUT_LINE('Erro: Ingredientes excedem o limite permitido.');
+   ELSE
+      DBMS_OUTPUT.PUT_LINE('Hambúrguer personalizado montado com sucesso!');
+   END IF;
+END;
+
+
+--
+--
+--
+Aqui deveria criar outro exercicio... criando loop e exibindo os conteúdos...
+-- <varray.FIRST> <varray.COUNT>
+--

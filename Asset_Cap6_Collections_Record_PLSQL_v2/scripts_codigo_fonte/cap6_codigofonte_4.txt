@@ -1,0 +1,54 @@
+-- A instrução SQL abaixo exibe o dia da semana por extenso
+-- a partir do número do dia.
+SET SERVEROUTPUT ON;
+DECLARE 
+
+-- Criamos o tipo de dados DIA_SEMANA que irá 
+-- ser associado a variável V_DIA_SEMANA.
+TYPE DIA_SEMANA IS VARRAY(7) OF VARCHAR2(15);
+V_DIA_SEMANA_EXTENSO DIA_SEMANA;
+ 
+BEGIN
+
+    V_DIA_SEMANA_EXTENSO  := DIA_SEMANA('Domingo','Segunda-feira','Terca-feira','Quarta-Feira','Quinta-Feira','Sexta-Feira','Sabado');
+
+FOR X IN 1..7
+LOOP
+   	DBMS_OUTPUT.PUT_LINE( V_DIA_SEMANA_EXTENSO(X) );
+END LOOP;
+
+-- Sempre que possuir um valor entre 1 e 7 é possível ter acesso ao dia da semana por extenso.
+-- No exemplo abaixo pedimos para exibir o 5a dia da semana
+DBMS_OUTPUT.PUT_LINE( 'Acesso ao dia da semana 5a feira: ' || V_DIA_SEMANA_EXTENSO(5) );
+    
+END;
+
+
+--
+-- Usando o metodo COUNT
+--
+-- A instrução SQL abaixo exibe o dia da semana por extenso
+-- a partir do número do dia.
+SET SERVEROUTPUT ON;
+DECLARE 
+
+-- Criamos o tipo de dados DIA_SEMANA que irá 
+-- ser associado a variável V_DIA_SEMANA.
+TYPE DIA_SEMANA IS VARRAY(7) OF VARCHAR2(15);
+V_DIA_SEMANA_EXTENSO DIA_SEMANA;
+ 
+BEGIN
+
+    V_DIA_SEMANA_EXTENSO  := DIA_SEMANA('Domingo','Segunda-feira','Terca-feira','Quarta-Feira','Quinta-Feira','Sexta-Feira','Sabado');
+
+FOR X IN 1..V_DIA_SEMANA_EXTENSO.COUNT
+LOOP
+   	DBMS_OUTPUT.PUT_LINE( V_DIA_SEMANA_EXTENSO(X) );
+END LOOP;
+
+-- Sempre que possuir um valor entre 1 e 7 é possível ter acesso ao dia da semana por extenso.
+-- No exemplo abaixo pedimos para exibir o 5a dia da semana
+DBMS_OUTPUT.PUT_LINE( 'Acesso ao dia da semana 5a feira: ' || V_DIA_SEMANA_EXTENSO(5) );
+    
+END;
+

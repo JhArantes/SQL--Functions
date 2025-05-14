@@ -1,0 +1,100 @@
+-- Elimina a tabela db_venda_ano_mes_forma_pagto caso ela exista.
+drop table db_venda_ano_mes_forma_pagto;
+
+-- Cria a tabela db_venda_ano_mes_forma_pagto
+create table db_venda_ano_mes_forma_pagto
+(   
+cd_forma_pagto 	 		number,
+ds_forma_pagto			varchar2(50),
+nr_ano                  number(4),
+nr_mes                  number(2),
+nm_mes_extenso			varchar2(15),
+vl_total_venda          number(10,2)
+);
+/
+
+-- Antes de realizar o processamento, limpamos todos os dados da tabela.
+DELETE FROM db_venda_ano_mes_forma_pagto;
+
+-- Script que faz a carga das vendas das formas de pagamento
+-- agrupada por ano e mês.
+--
+SET SERVEROUTPUT ON;
+DECLARE
+
+   -- Definimos um tipo de dado varray para armazenar os meses do ano por extenso.
+   TYPE aMesExtenso IS VARRAY(12) OF VARCHAR2(15); 
+   va_aMesExtenso aMesExtenso;
+   
+	type rec_venda_ano_mes_forma_pagto is record
+	(   cd_forma_pagto 	 		number,
+        ds_forma_pagto          varchar2(30),
+        nr_ano                  number(4),
+        nr_mes                  number(2),
+        vl_total_venda          number(10,2)
+	);
+
+   -- Definindo uma Nested Table baseada no RECORD
+   TYPE tof_venda_ano_mes_forma_pagto IS TABLE OF rec_venda_ano_mes_forma_pagto;
+
+   -- Variável do tipo array(a) para armazenar os dados coletados
+	va_rec_venda_ano_mes_forma_pagto tof_venda_ano_mes_forma_pagto;
+	
+BEGIN
+
+    -- Instancia os meses do ano na variável do tipo Array va_aMesExtenso.
+    va_aMesExtenso := aMesExtenso('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+
+    -- Ativamos uma instância de array do tipo Table Of
+    va_rec_venda_ano_mes_forma_pagto := tof_venda_ano_mes_forma_pagto();
+
+   -- Coletando os valores médios de vendas agrupados por forma de pagamento
+   -- e atribuindo esse conteúdo a variavel array va_rec_venda_ano_mes_forma_pagto
+    SELECT  P.CD_FORMA_PAGTO,
+            FP.DS_FORMA_PAGTO,
+            EXTRACT( YEAR FROM P.DT_PEDIDO) ANO_VENDA,
+            EXTRACT( MONTH FROM P.DT_PEDIDO) MES_VENDA,
+            SUM(P.VL_TOT_PEDIDO) VL_TOTAL_VENDA
+    BULK COLLECT INTO va_rec_venda_ano_mes_forma_pagto -- carrega os dados do select para a array.
+    FROM    DB_PEDIDO P INNER JOIN DB_FORMA_PAGAMENTO FP
+    ON (P.CD_FORMA_PAGTO = FP.CD_FORMA_PAGTO)
+    GROUP BY  P.CD_FORMA_PAGTO,
+              FP.DS_FORMA_PAGTO,
+            EXTRACT( YEAR FROM P.DT_PEDIDO),
+            EXTRACT( MONTH FROM P.DT_PEDIDO)
+    ORDER BY 1,2,3;
+
+    -- Execute a leitura completa (primeiro e último dado da array)
+    -- Com o comando FOR é possível descarregar os dados da array.
+    FOR xpto in va_rec_venda_ano_mes_forma_pagto.FIRST..va_rec_venda_ano_mes_forma_pagto.LAST
+    LOOP
+
+	  -- A cada linha da array inserimos em nossa tabela de destino
+	  -- Perceba a varray va_aMesExtenso dentro da nossa instrução update
+	  --
+      INSERT INTO db_venda_ano_mes_forma_pagto
+      VALUES
+      (
+        va_rec_venda_ano_mes_forma_pagto(xpto).cd_forma_pagto,
+        va_rec_venda_ano_mes_forma_pagto(xpto).ds_forma_pagto,
+        va_rec_venda_ano_mes_forma_pagto(xpto).nr_ano,
+        va_rec_venda_ano_mes_forma_pagto(xpto).nr_mes,
+        va_aMesExtenso(va_rec_venda_ano_mes_forma_pagto(xpto).nr_mes),        
+        va_rec_venda_ano_mes_forma_pagto(xpto).vl_total_venda 
+      );
+
+    END LOOP;
+
+    -- Ao final do processamento, persiste os dados
+    COMMIT;
+    
+   -- Exibindo mensagens para verificar a execução
+   DBMS_OUTPUT.PUT_LINE('Atualizações concluídas com sucesso.');
+   DBMS_OUTPUT.PUT_LINE('Formas de pagamento atualizadas: ' || va_rec_venda_ano_mes_forma_pagto.COUNT);
+
+END;
+/
+
+select * from db_temp_venda_ano_mes_forma_pagto;
+select * from db_venda_ano_mes_forma_pagto;
+

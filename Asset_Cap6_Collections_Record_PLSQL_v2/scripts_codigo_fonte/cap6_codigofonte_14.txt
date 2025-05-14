@@ -1,0 +1,8 @@
+column nm_cliente format a30;
+SELECT c.nr_cliente, 
+       c.nm_cliente,
+       t.data_avaliacao, 
+       t.nota_avaliacao
+FROM DB_CLIENTE c,
+     TABLE(c.obj_pesquisa_satisfacao) t
+WHERE c.nr_cliente = 1;

@@ -1,0 +1,2 @@
+COLUMN DS_FORMA_PAGTO FORMAT A22;
+SELECT * FROM db_venda_ano_mes_forma_pagto;

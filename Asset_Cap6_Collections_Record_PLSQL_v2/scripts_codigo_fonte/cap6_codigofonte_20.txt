@@ -1,0 +1,36 @@
+SET SERVEROUTPUT ON;
+DECLARE
+
+	type rec_venda_forma_pagto is record
+	( cd_forma_pagto 	 		db_forma_pagamento.cd_forma_pagto%type,
+	  vl_ticket_medio_venda     db_forma_pagamento.vl_ticket_medio_vendas%type
+	);
+
+   -- Definindo uma Nested Table baseada no RECORD
+   TYPE tof_forma_pagto IS TABLE OF rec_venda_forma_pagto;
+
+   -- Variável do tipo array(a) para armazenar os dados coletados
+	arec_venda_forma_pagto tof_forma_pagto;
+	
+BEGIN
+
+   -- Coletando os valores médios de vendas agrupados por forma de pagamento
+   SELECT CD_FORMA_PAGTO, 
+          ROUND( AVG(VL_TOT_PEDIDO) ,2) vl_ticket_medio_vendas
+   BULK COLLECT INTO arec_venda_forma_pagto
+   FROM DB_PEDIDO
+   GROUP BY CD_FORMA_PAGTO;
+
+   -- Atualizando a tabela DB_FORMA_PAGAMENTO com os valores médios
+   FORALL i IN 1..arec_venda_forma_pagto.COUNT
+
+      UPDATE DB_FORMA_PAGAMENTO  
+      SET 	vl_ticket_medio_vendas = arec_venda_forma_pagto(i).vl_ticket_medio_venda
+	  WHERE CD_FORMA_PAGTO = arec_venda_forma_pagto(i).cd_forma_pagto;
+
+   -- Exibindo mensagens para verificar a execução
+   DBMS_OUTPUT.PUT_LINE('Atualizações concluídas com sucesso.');
+   DBMS_OUTPUT.PUT_LINE('Formas de pagamento atualizadas: ' || arec_venda_forma_pagto.COUNT);
+
+END;
+/

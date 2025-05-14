@@ -1,0 +1,1 @@
+ALTER TABLE DB_FORMA_PAGAMENTO ADD vl_ticket_medio_vendas NUMBER;

@@ -1,0 +1,61 @@
+-- O script abaixo utiliza o método de acesso EXISTS 
+-- em uma PL/SQL Tables
+--
+
+SET SERVEROUTPUT ON
+DECLARE
+   -- Definição de um tipo de dado RECORD com três colunas
+   TYPE rec_vendas_diaria_loja IS RECORD (
+      nr_loja               NUMBER(5),
+      nome_loja             VARCHAR2(100),
+      data_venda            DATE,
+      valor_total_vendas    NUMBER(8,2)
+   );
+
+  -- Tabela indexada baseada no RECORD
+   TYPE atab_vendas_diaria_por_loja IS TABLE OF rec_vendas_diaria_loja INDEX BY PLS_INTEGER;
+   array_vendas_diaria_loja atab_vendas_diaria_por_loja;
+
+   -- variável que irá armazenar a linha atual
+   v_linha_atual_array NUMBER;
+
+BEGIN
+
+   -- Populando dados fixos em uma estrutura PL/SQL Tables
+   -- Loja número 1 
+   array_vendas_diaria_loja(1).nr_loja 		:= 1;
+   array_vendas_diaria_loja(1).nome_loja	:= 'Loja DeLuxe DBurger Centro São Paulo';
+   array_vendas_diaria_loja(1).data_venda 	:= SYSDATE; -- Armazena a data atual do sistema.
+   array_vendas_diaria_loja(1).valor_total_vendas := 47654.32;
+
+   -- Populando dados fixos em uma estrutura PL/SQL Tables
+   -- Loja número 11 
+   array_vendas_diaria_loja(11).nr_loja 	:= 11;
+   array_vendas_diaria_loja(11).nome_loja	:= 'Loja Premium DBurger Suzano';
+   array_vendas_diaria_loja(11).data_venda 	:= SYSDATE; -- Armazena a data atual do sistema.
+   array_vendas_diaria_loja(11).valor_total_vendas := 45301;   
+
+
+   -- Populando dados fixos em uma estrutura PL/SQL Tables
+   -- Loja número 5 
+   array_vendas_diaria_loja(5).nr_loja 		:= 5;
+   array_vendas_diaria_loja(5).nome_loja	:= 'Loja Premium DBurger Florianópolis';
+   array_vendas_diaria_loja(5).data_venda 	:= SYSDATE; -- Armazena a data atual do sistema.
+   array_vendas_diaria_loja(5).valor_total_vendas := 32908;
+
+   -- Vamos exibir os dados da loja de número 11, que se encontra dentro
+   -- estrutura PL/SQL Tables
+   v_linha_atual_array := 11;
+    
+   -- Se a loja 11 estiver na PL/SQL Table vai entrar dentro do IF
+   IF array_vendas_diaria_loja.EXISTS(11) THEN
+	 
+      DBMS_OUTPUT.PUT_LINE('Loja (' || array_vendas_diaria_loja(v_linha_atual_array).nr_loja 
+      || '): ' || array_vendas_diaria_loja(v_linha_atual_array).nome_loja 
+      || ', Data: ' || TO_CHAR(array_vendas_diaria_loja(v_linha_atual_array).data_venda, 'DD/MM')
+      || ', Total Vendas: ' || array_vendas_diaria_loja(v_linha_atual_array).valor_total_vendas);
+   ELSE
+         DBMS_OUTPUT.PUT_LINE('A loja de número 11 não está cadastrada na PL/SQL Tables');
+   END IF;
+
+END;

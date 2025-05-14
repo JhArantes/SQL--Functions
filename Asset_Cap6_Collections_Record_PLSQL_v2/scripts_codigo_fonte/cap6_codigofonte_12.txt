@@ -1,0 +1,24 @@
+-- Os comandos abaixo criam estruturas records dentro de uma instancia Oracle.
+-- Criando um TYPE RECORD que irá receber o codigo do cliente, a data
+-- e a nota de avaliação dada pelo cliente.
+CREATE OR REPLACE TYPE rec_avaliacao AS OBJECT (
+   codigo_cliente NUMBER,
+   data_avaliacao DATE,
+   nota_avaliacao NUMBER
+);
+/
+
+
+--
+-- Após isso, o próximo passo é instanciar esse record em um type record. 
+--
+CREATE OR REPLACE TYPE tof_avaliacao_cliente AS TABLE OF rec_avaliacao;
+/
+
+-- Agora vamos criar uma nova coluna na tabela DB_CLIENTE 
+-- para armazenar algumas notas de satisfação feita por ele
+--
+ALTER TABLE DB_CLIENTE ADD (
+   obj_pesquisa_satisfacao tof_avaliacao_cliente
+) NESTED TABLE obj_pesquisa_satisfacao STORE AS pesquisa_satisfacao_cliente;
+/

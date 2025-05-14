@@ -1,0 +1,14 @@
+SET SERVEROUTPUT ON
+DECLARE
+   -- Definição de um tipo de dado RECORD com três colunas
+   TYPE rec_vendas_diaria_loja IS RECORD (
+      nr_loja               NUMBER(5),
+      nome_loja             VARCHAR2(100),
+      data_venda            DATE,
+      valor_total_vendas    NUMBER(8,2)
+   );
+
+  v_rec_vendas_diaria_loja rec_vendas_diaria_loja;
+BEGIN
+	NULL;
+END;

@@ -1,0 +1,27 @@
+--
+-- Script PL/SQL que atualiza o cliente número 1,
+-- incluindo 3 pesquisas de satisfação feita por ele.
+--
+DECLARE
+   -- Declaração da variável do tipo Nested Table
+   v_avaliacoes tof_avaliacao_cliente;
+BEGIN
+   -- Inicializando a Nested Table
+   v_avaliacoes := tof_avaliacao_cliente();
+
+   -- Populando 3 avaliações para um cliente específico
+   v_avaliacoes.EXTEND(3);
+
+   v_avaliacoes(1) := rec_avaliacao(1, DATE '2024-11-01', 5); -- Cliente 1 deu nota 5
+   v_avaliacoes(2) := rec_avaliacao(1, DATE '2024-11-10', 4); -- Cliente 1 deu nota 4
+   v_avaliacoes(3) := rec_avaliacao(1, DATE '2024-11-20', 3); -- Cliente 1 deu nota 3
+
+   -- Atualizando a coluna na tabela DB_CLIENTE
+   UPDATE DB_CLIENTE
+   SET obj_pesquisa_satisfacao = v_avaliacoes
+   WHERE nr_cliente = 1;
+
+   -- Confirmando as transações pendentes
+   COMMIT;
+END;
+/

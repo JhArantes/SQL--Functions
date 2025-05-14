@@ -1,0 +1,32 @@
+--
+-- Script PL/SQL que insere um cliente novo de código -1
+-- utilizando o conceito de Nested Table
+--
+DECLARE
+   -- Declarando uma variável do tipo Nested Table
+   v_pesquisa_satisfacao tof_avaliacao_cliente;
+BEGIN
+   -- Inicializando a Nested Table
+   v_pesquisa_satisfacao := tof_avaliacao_cliente();
+
+   -- Populando 3 registros na Nested Table
+   v_pesquisa_satisfacao.EXTEND(3);
+   v_pesquisa_satisfacao(1) := rec_avaliacao(-1, TO_DATE('2024-11-15', 'YYYY-MM-DD'), 2);
+   v_pesquisa_satisfacao(2) := rec_avaliacao(-1, TO_DATE('2024-11-16', 'YYYY-MM-DD'), 1);
+   v_pesquisa_satisfacao(3) := rec_avaliacao(-1, TO_DATE('2024-11-17', 'YYYY-MM-DD'), 0);
+
+   -- Inserindo o cliente com os dados de avaliação na tabela DB_CLIENTE
+   INSERT INTO DB_CLIENTE (
+      NR_CLIENTE,                         
+      NM_CLIENTE,
+      OBJ_PESQUISA_SATISFACAO
+   ) 
+   VALUES (
+      -1,
+      'Silmara Sousa',
+      v_pesquisa_satisfacao
+   );
+
+   -- Confirmando a transação
+   COMMIT;
+END;
