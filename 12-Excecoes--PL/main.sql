@@ -140,7 +140,7 @@ BEGIN
 
 		BEGIN
 		   -- Para cada cliente selecionado, verificamos se o cliente está INATIVO
-		   -- em caso positivo, exibimos uma mensagem de aviso.
+		   -- em caso positivo, exibimos uma mensagem de aviso
 		   SELECT ST_CLIENTE
 		   INTO	V_ST_CLIENTE
 		   FROM	DB_CLIENTE
